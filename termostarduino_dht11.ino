@@ -28,12 +28,12 @@ void loop() {
     unsigned long elapsedTime = millis() - startTime;
  
     int result = sensore.readTemperatureHumidity(temp, umidita);
-    if(temp >= 15 && temp <= 20){
+    if(temp >= 15 && temp <= 25){
       digitalWrite(LED1,HIGH);
       digitalWrite(LED2,LOW);
       led1=true;
       led2=false;
-    }else if(temp > 20){
+    }else if(temp > 25){
       digitalWrite(LED2, HIGH);
       digitalWrite(LED1, LOW);
       led2=true;
