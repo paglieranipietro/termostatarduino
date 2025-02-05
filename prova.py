@@ -77,6 +77,7 @@ def update_data_callback():
             dpg.set_value("shaded_area_temp", [xs, ys1_temp, ys2_temp])
             dpg.set_value("shaded_area_humid", [xs, ys1_humid, ys2_humid])
 
+            salva_dati(temperature, humidity)
             update_zoom()
 
 
