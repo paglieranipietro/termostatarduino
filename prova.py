@@ -81,9 +81,9 @@ def update_data_callback():
             update_zoom()
 
 
-def serial_task(q: mp.Queue):
+def serial_task(q: mp.Queue, com):
     try:
-        arduino = ser.Serial("COM5", 9600)
+        arduino = ser.Serial("COM" + com, 9600)
     except ser.SerialException as e:
         print(f"Error: {e}")
         return
@@ -97,9 +97,11 @@ def serial_task(q: mp.Queue):
 
 
 if __name__ == "__main__":
+    com = input("Inserire il numero della COM: ")
+
     mp.freeze_support()
     q = mp.Queue()
-    p = mp.Process(target=serial_task, args=(q,))
+    p = mp.Process(target=serial_task, args=(q,com))
     p.start()
 
     with dpg.window(label="Termostato"):
