@@ -87,12 +87,12 @@ def update_data_callback():
             if led1:
                 dpg.configure_item("led1", fill=(0, 255, 0))
             else:
-                dpg.configure_item("led1", fill=(255, 0, 0))
+                dpg.configure_item("led1", fill=(0, 30, 0))
 
             if led2:
-                dpg.configure_item("led2", fill=(0, 255, 0))
-            else:
                 dpg.configure_item("led2", fill=(255, 0, 0))
+            else:
+                dpg.configure_item("led2", fill=(30, 0, 0))
 
 
 def serial_task(q: mp.Queue, com):
@@ -135,9 +135,9 @@ if __name__ == "__main__":
             dpg.add_line_series(xs, ys_humid, label="Umidità", tag="humidity_series", parent=y_axis_humid)
 
         with dpg.window(label="Stato LED", pos=(950, 250), width=325, height=150):
-            dpg.draw_circle((100, 40), 20, color=(0, 0, 0), fill=(255, 0, 0), tag="led1")
+            dpg.draw_circle((100, 40), 20, color=(0, 0, 0), fill=(0, 30, 0), tag="led1")
             dpg.add_text("LED 1", pos=(90, 90), tag="led1_text")
-            dpg.draw_circle((200, 40), 20, color=(0, 0, 0), fill=(255, 0, 0), tag="led2")
+            dpg.draw_circle((200, 40), 20, color=(0, 0, 0), fill=(30, 0, 0), tag="led2")
             dpg.add_text("LED 2", pos=(190, 90), tag="led2_text")
 
     dpg.create_viewport(title='Termostato', width=1400, height=800)
