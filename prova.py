@@ -36,10 +36,10 @@ def salva_dati(temp, umid, filename="dati_temperatura.json"):
 
 def update_zoom():
     if xs:
-        min_x = min(xs)
-        max_x = max(xs)
-        dpg.set_axis_limits("x_axis_temp", min_x - 5, max_x)
-        dpg.set_axis_limits("x_axis_humid", min_x - 5, max_x)
+        min_x = 0
+        max_x = 20
+        dpg.set_axis_limits("x_axis_temp", min_x, max_x)
+        dpg.set_axis_limits("x_axis_humid", min_x, max_x)
 
     if ys_temp and ys_humid:
         min_y_temp = min(min(ys1_temp), min(ys2_temp))
