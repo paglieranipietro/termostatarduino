@@ -5,6 +5,10 @@
 DHT11 sensore(2);
 #define LED1 6
 #define LED2 7
+
+const int SOGLIA_BASSA = 15;
+const int SOGLIA_ALTA = 25;
+
  
 unsigned long startTime;
 void setup() {
@@ -28,17 +32,17 @@ void loop() {
     unsigned long elapsedTime = millis() - startTime;
  
     int result = sensore.readTemperatureHumidity(temp, umidita);
-    if(temp >= 15 && temp <= 25){
+    if(temp >= SOGLIA_BASSA && temp <= SOGLIA_ALTA){
       digitalWrite(LED1,HIGH);
       digitalWrite(LED2,LOW);
       led1=true;
       led2=false;
-    }else if(temp > 25){
+    }else if(temp > SOGLIA_ALTA){
       digitalWrite(LED2, HIGH);
       digitalWrite(LED1, LOW);
       led2=true;
       led1=false;
-    }else if(temp < 15){
+    }else if(temp < SOGLIA_BASSA){
       digitalWrite(LED2, LOW);
       digitalWrite(LED1, LOW);
       led2=false;
