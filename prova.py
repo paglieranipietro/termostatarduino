@@ -4,6 +4,7 @@ import random
 import serial as ser
 import json
 import datetime
+from screeninfo import get_monitors
 
 dpg.create_context()
 
@@ -15,6 +16,9 @@ ys1_temp = []
 ys2_temp = []
 ys1_humid = []
 ys2_humid = []
+MAX_WIDTH = get_monitors()[0].width
+MAX_HEIGHT = get_monitors()[0].height
+
 
 
 def salva_dati(temp, umid, filename="dati_temperatura.json"):
@@ -120,27 +124,29 @@ if __name__ == "__main__":
 
     with dpg.window(label="Termostato", tag="main_window"):
         dpg.set_primary_window("main_window", True)
-        with dpg.plot(label="Temperatura", tag="shaded_plot_temp", width=800, height=300):
+        with dpg.plot(label="Temperatura", tag="shaded_plot_temp", width=1200, height=500):
             x_axis_temp = dpg.add_plot_axis(dpg.mvXAxis, label="x", tag="x_axis_temp")
             y_axis_temp = dpg.add_plot_axis(dpg.mvYAxis, label="y", tag="y_axis_temp")
             dpg.add_shade_series(xs, ys1_temp, y2=ys2_temp, label="Shaded Area", tag="shaded_area_temp",
                                  parent=y_axis_temp)
             dpg.add_line_series(xs, ys_temp, label="Temperatura", tag="temperature_series", parent=y_axis_temp)
 
-        with dpg.plot(label="Umidità", tag="shaded_plot_humid", width=800, height=300):
+        with dpg.plot(label="Umidità", tag="shaded_plot_humid", width=1200, height=500):
             x_axis_humid = dpg.add_plot_axis(dpg.mvXAxis, label="x", tag="x_axis_humid")
             y_axis_humid = dpg.add_plot_axis(dpg.mvYAxis, label="y", tag="y_axis_humid")
             dpg.add_shade_series(xs, ys1_humid, y2=ys2_humid, label="Shaded Area", tag="shaded_area_humid",
                                  parent=y_axis_humid)
             dpg.add_line_series(xs, ys_humid, label="Umidità", tag="humidity_series", parent=y_axis_humid)
 
-        with dpg.window(label="Stato LED", pos=(950, 250), width=325, height=150):
+        with dpg.window(label="Stato LED", pos=(1300, 200), width=325, height=150):
             dpg.draw_circle((100, 40), 20, color=(0, 0, 0), fill=(0, 30, 0), tag="led1")
             dpg.add_text("LED 1", pos=(90, 90), tag="led1_text")
             dpg.draw_circle((200, 40), 20, color=(0, 0, 0), fill=(30, 0, 0), tag="led2")
             dpg.add_text("LED 2", pos=(190, 90), tag="led2_text")
 
-    dpg.create_viewport(title='Termostato', width=1400, height=800)
+    dpg.create_viewport(title='Termostato')
+    dpg.configure_viewport("Termostato", width=MAX_WIDTH, height=MAX_HEIGHT, always_on_top=True)
+    dpg.set_viewport_pos([0,0])
     dpg.setup_dearpygui()
     dpg.show_viewport()
 
