@@ -1,3 +1,5 @@
+import time
+
 import dearpygui.dearpygui as dpg
 import multiprocessing as mp
 import random
@@ -9,7 +11,7 @@ from screeninfo import get_monitors
 dpg.create_context()
 
 # creating data
-xs = [0, ] * 20
+xs = []
 ys_temp = []
 ys_humid = []
 ys1_temp = []
@@ -19,22 +21,7 @@ ys2_humid = []
 MAX_WIDTH = get_monitors()[0].width
 MAX_HEIGHT = get_monitors()[0].height
 
-
-def update_xs(value):
-    if xs[len(xs) - 1] == 0:
-        for i in range(len(xs)):
-            if xs[i] != 0:
-                xs[i] = value
-    else:
-        xs.pop(0)
-        xs.append(value)
-        ys_temp.pop(0)
-        ys_humid.pop(0)
-        ys1_temp.pop(0)
-        ys2_temp.pop(0)
-        ys1_humid.pop(0)
-        ys2_humid.pop(0)
-
+start = time.time()
 
 def salva_dati(temp, umid, filename="dati_temperatura.json"):
     nuovo_dato = {
@@ -51,8 +38,8 @@ def salva_dati(temp, umid, filename="dati_temperatura.json"):
 
 def update_zoom():
     if xs:
-        min_x = 0
-        max_x = 20
+        min_x = xs[0]
+        max_x = xs[len(xs) - 1]
         dpg.set_axis_limits("x_axis_temp", min_x, max_x)
         dpg.set_axis_limits("x_axis_humid", min_x, max_x)
 
@@ -69,15 +56,22 @@ def update_data_callback():
     if not q.empty():
         line = q.get()
         if line:
-            update_xs(float(datetime.now().timestamp()))
+            if len(xs) >= 20:
+                ys_temp.pop(0)
+                ys_humid.pop(0)
+                ys1_temp.pop(0)
+                ys2_temp.pop(0)
+                ys1_humid.pop(0)
+                ys2_humid.pop(0)
+                xs.pop(0)
 
             temperature = float(line["temp"])
             humidity = float(line["umid"])
-            ys_temp.append(temperature)
-            ys_humid.append(humidity)
 
             if len(xs) < 20:
-                xs.append(len(ys_temp) - 1)
+                xs.append(time.time() - start)
+                ys_temp.append(temperature)
+                ys_humid.append(humidity)
 
             dpg.set_value("temperature_series", [xs, ys_temp])
             dpg.set_value("humidity_series", [xs, ys_humid])
@@ -86,6 +80,8 @@ def update_data_callback():
             ys2_temp.append(temperature - random.uniform(0.3, 0.5))
             ys1_humid.append(humidity + random.uniform(0.3, 0.5))
             ys2_humid.append(humidity - random.uniform(0.3, 0.5))
+
+
 
             salva_dati(temperature, humidity)
             update_zoom()
@@ -126,7 +122,7 @@ if __name__ == "__main__":
 
     mp.freeze_support()
     q = mp.Queue()
-    p = mp.Process(target=serial_task, args=(q, com))
+    p = mp.Process(target=serial_task, args=(q,com))
     p.start()
 
     with dpg.window(label="Termostato", tag="main_window"):
@@ -153,7 +149,7 @@ if __name__ == "__main__":
 
     dpg.create_viewport(title='Termostato')
     dpg.configure_viewport("Termostato", width=MAX_WIDTH, height=MAX_HEIGHT, always_on_top=True)
-    dpg.set_viewport_pos([0, 0])
+    dpg.set_viewport_pos([0,0])
     dpg.setup_dearpygui()
     dpg.show_viewport()
 
