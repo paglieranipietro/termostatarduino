@@ -1,5 +1,9 @@
 # termostatarduino
 
+
+https://github.com/user-attachments/assets/34ae72cd-3ddf-4261-9f9f-b363b3836a29
+
+
 ``termostarduino`` é un progetto che mira all'analisi di umiditá e temperatura dell'ambiente circostante.
 
 Tramite una scheda di prototipazione Arduino ed un sensore `DHT11`, termostarduino realizzerá
@@ -9,11 +13,13 @@ I dati raccolti in tempo d'esecuzione verranno poi salvati in un file json per u
 
 ## Componenti necessari
 
-1. Una scheda `arduino` (qualsiasi é utilizzabile, purché disponga di almeno un pin digitale e di pin per l'alimentazione a 5V)
+1. Una scheda `arduino` (qualsiasi é utilizzabile, purché disponga di almeno 3 pin digitali e di due pin per l'alimentazione a 5V)
 2. Un sensore `DHT11`
 3. Due LED
 
 ## Montaggio del circuito
+
+![circuito](https://github.com/user-attachments/assets/14e24e45-8cac-4a37-8b22-eb65f64035ff)
 
 N.B.: Il pinout del DHT11 potrebbe variare in base al produttore, verificare dal datasheet fornito dal produttore per evitare guasti.
 
@@ -42,4 +48,4 @@ All'interno del file `termostarduino_dht11/termostarduino_dht11.ino` é possibil
 - Le costanti `LED1` e `LED2`, che indicano rispettivamente a quale pin sono collegati i LED verde e rosso
 - Il pin a cui é collegato il sensore `DHT11` (all'interno del costruttore dell'oggetto `sensore`)
 - Le soglie minima e massima al superamento delle quali verranno accesi i LED (`SOGLIA_MINIMA` e `SOGLIA_MASSIMA`)
-- Ogni quanto inviare i dati raccolti dal sensore alla seriale per l'elaborazione e la visualizzazione nel programma principale (`SEND_INTERVAL`)
+- Ogni quanti ms inviare i dati raccolti dal sensore alla seriale per l'elaborazione e la visualizzazione nel programma principale (`SEND_INTERVAL`)
