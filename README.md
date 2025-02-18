@@ -49,3 +49,12 @@ All'interno del file `termostarduino_dht11/termostarduino_dht11.ino` é possibil
 - Il pin a cui é collegato il sensore `DHT11` (all'interno del costruttore dell'oggetto `sensore`)
 - Le soglie minima e massima al superamento delle quali verranno accesi i LED (`SOGLIA_MINIMA` e `SOGLIA_MASSIMA`)
 - Ogni quanti ms inviare i dati raccolti dal sensore alla seriale per l'elaborazione e la visualizzazione nel programma principale (`SEND_INTERVAL`)
+
+## Presentazione
+
+È stata ralizzata una presentazione che spiega le idee relative a questo progetto
+
+[Presentazione canva](https://www.canva.com/design/DAGe45uReeU/z94VznGvpwEeyN7mJQWm8w/edit?utm_content=DAGe45uReeU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+
+
