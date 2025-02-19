@@ -6,6 +6,8 @@ import random
 import serial as ser
 import json
 import datetime
+
+from dearpygui.dearpygui import add_text
 from screeninfo import get_monitors
 
 dpg.create_context()
@@ -48,8 +50,8 @@ def update_zoom():
         max_y_temp = max(max(ys1_temp), max(ys2_temp))
         min_y_humid = min(min(ys1_humid), min(ys2_humid))
         max_y_humid = max(max(ys1_humid), max(ys2_humid))
-        dpg.set_axis_limits("y_axis_temp", min_y_temp - 10, max_y_temp + 10)
-        dpg.set_axis_limits("y_axis_humid", min_y_humid - 10, max_y_humid + 10)
+        dpg.set_axis_limits("y_axis_temp", min_y_temp - 5, max_y_temp + 5)
+        dpg.set_axis_limits("y_axis_humid", min_y_humid - 5, max_y_humid + 5)
 
 
 def update_data_callback():
@@ -81,7 +83,7 @@ def update_data_callback():
             ys1_humid.append(humidity + random.uniform(0.3, 0.5))
             ys2_humid.append(humidity - random.uniform(0.3, 0.5))
 
-
+            dpg.set_value("temp_text", str(round(temperature, 2)) + "°C")
 
             salva_dati(temperature, humidity)
             update_zoom()
@@ -116,14 +118,27 @@ def serial_task(q: mp.Queue, com):
         print(msg)
         q.put(msg)
 
+def test_data(q: mp.Queue):
+    num_temp = 25
+    num_humid = 60
+    while True:
+        msg = {"temp":random.uniform(num_temp - 3, num_temp + 3), "umid":random.uniform(num_humid - 10,num_humid + 10), "led1":random.choice([False, True]), "led2":random.choice([False, True])}
+        print(msg)
+        q.put(msg)
+        time.sleep(2)
+
 
 if __name__ == "__main__":
     com = input("Inserire il numero della COM: ")
 
     mp.freeze_support()
     q = mp.Queue()
-    p = mp.Process(target=serial_task, args=(q,com))
-    p.start()
+    if com == "TEST":
+        t = mp.Process(target=test_data, args=(q,))
+        t.start()
+    else:
+        p = mp.Process(target=serial_task, args=(q,com))
+        p.start()
 
     with dpg.window(label="Termostato", tag="main_window"):
         dpg.set_primary_window("main_window", True)
@@ -141,11 +156,12 @@ if __name__ == "__main__":
                                  parent=y_axis_humid)
             dpg.add_line_series(xs, ys_humid, label="Umidità", tag="humidity_series", parent=y_axis_humid)
 
-        with dpg.window(label="Stato LED", pos=(1300, 200), width=325, height=150):
-            dpg.draw_circle((100, 40), 20, color=(0, 0, 0), fill=(0, 30, 0), tag="led1")
-            dpg.add_text("LED 1", pos=(90, 90), tag="led1_text")
-            dpg.draw_circle((200, 40), 20, color=(0, 0, 0), fill=(30, 0, 0), tag="led2")
-            dpg.add_text("LED 2", pos=(190, 90), tag="led2_text")
+        with dpg.window(label="Stato LED temperatura", pos=(1300, 0), width=300, height=150):
+            dpg.draw_circle((100, 40), 30, color=(0, 0, 0), fill=(0, 30, 0), tag="led1")
+            dpg.draw_circle((200, 40), 30, color=(0, 0, 0), fill=(30, 0, 0), tag="led2")
+
+        with dpg.window(label="temp_value", pos=(1300, 200), width=300, height=150):
+            add_text("0°C", pos=(), tag="temp_text", )
 
     dpg.create_viewport(title='Termostato')
     dpg.configure_viewport("Termostato", width=MAX_WIDTH, height=MAX_HEIGHT, always_on_top=True)
