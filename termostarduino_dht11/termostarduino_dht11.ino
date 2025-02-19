@@ -18,11 +18,8 @@ void setup() {
 }
  
 const int SEND_INTERVAL = 2000;
- 
-bool shuffle = false;
 StaticJsonDocument<200> jsonBuffer;
 void loop() {
-    shuffle = !shuffle;
     int temp = 0;
     int umidita = 0;
     bool led1 = false, led2 = false;
