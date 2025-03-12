@@ -6,7 +6,7 @@ DHT11 sensore(2);
 #define LED1 6
 #define LED2 7
 const int SOGLIA_MINIMA = 15;
-const int SOGLIA_MASSIMA = 15;
+const int SOGLIA_MASSIMA = 25;
 
 unsigned long startTime;
 void setup() {
