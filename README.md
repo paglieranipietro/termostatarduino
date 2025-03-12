@@ -15,7 +15,7 @@ I dati raccolti in tempo d'esecuzione verranno poi salvati in un file json per u
 
 1. Una scheda `arduino` (qualsiasi é utilizzabile, purché disponga di almeno 3 pin digitali e di due pin per l'alimentazione a 5V)
 2. Un sensore `DHT11`
-3. Due LED
+3. Due LED 
 
 ## Montaggio del circuito
 
