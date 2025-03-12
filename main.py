@@ -7,10 +7,12 @@ import serial as ser
 import json
 import datetime
 
-from dearpygui.dearpygui import add_text
+from dearpygui.dearpygui import add_text, draw_text, set_global_font_scale
 from screeninfo import get_monitors
 
 dpg.create_context()
+
+set_global_font_scale(1.5)
 
 # creating data
 xs = []
@@ -84,6 +86,7 @@ def update_data_callback():
             ys2_humid.append(humidity - random.uniform(0.3, 0.5))
 
             dpg.set_value("temp_text", str(round(temperature, 2)) + "°C")
+            dpg.set_value("humid_text", str(round(humidity, 2)) + "%")
 
             salva_dati(temperature, humidity)
             update_zoom()
@@ -161,7 +164,8 @@ if __name__ == "__main__":
             dpg.draw_circle((200, 40), 30, color=(0, 0, 0), fill=(30, 0, 0), tag="led2")
 
         with dpg.window(label="temp_value", pos=(1300, 200), width=300, height=150):
-            add_text("0°C", pos=(), tag="temp_text", )
+            add_text("0°C", pos=(), tag="temp_text")
+            add_text("0%", pos=(), tag="humid_text")
 
     dpg.create_viewport(title='Termostato')
     dpg.configure_viewport("Termostato", width=MAX_WIDTH, height=MAX_HEIGHT, always_on_top=True)
